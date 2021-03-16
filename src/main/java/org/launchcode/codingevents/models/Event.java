@@ -1,8 +1,9 @@
 package org.launchcode.codingevents.models;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.*;
+import java.util.Date;
 import java.util.Objects;
 
 public class Event {
@@ -17,29 +18,66 @@ public class Event {
     @Size(max = 500, message = "Description is longer than 500 characters.")
     private String description;
 
-    @NotBlank
-    @Email(message="Invalid Email.")
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid Email.")
     private String contactEmail;
 
-    public Event(String name, String description, String contactEmail) {
+    @NotNull(message = "Enter valid location")
+    @NotBlank(message = "Location can not be blank")
+    private String eventLocation;
+
+    @AssertTrue(message = "All events require registration.")
+    private Boolean registrationRequired;
+
+    @Positive(message = "At least one guest must attend.")
+    private int numberOfGuests;
+
+
+    @DateTimeFormat
+    private Date date;
+
+    private EventType type;
+
+    public Event(String name, String description, String contactEmail, String eventLocation,
+                 Boolean registrationRequired, int numberOfGuests, Date date, EventType type) {
+        this();
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
+        this.eventLocation = eventLocation;
+        this.numberOfGuests = numberOfGuests;
+        this.date= date;
+        this.type = type;
+        this.registrationRequired = true;
+    }
+
+    public Event() {
         this.id = nextId;
         nextId++;
     }
 
-    public Event() {}
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public EventType getType() {
+        return type;
+    }
+
+    public void setType(EventType type) {
+        this.type = type;
+    }
+
+    public Date getDate() { return date; }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getDescription() {
@@ -56,6 +94,30 @@ public class Event {
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
+    }
+
+    public String getEventLocation() {
+        return eventLocation;
+    }
+
+    public void setEventLocation(String eventLocation) {
+        this.eventLocation = eventLocation;
+    }
+
+    public Boolean getRegistrationRequired() {
+        return registrationRequired;
+    }
+
+    public void setRegistrationRequired(Boolean registrationRequired) {
+        this.registrationRequired = registrationRequired;
+    }
+
+    public int getNumberOfGuests() {
+        return numberOfGuests;
+    }
+
+    public void setNumberOfGuests(int numberOfGuests) {
+        this.numberOfGuests = numberOfGuests;
     }
 
     @Override
