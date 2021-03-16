@@ -1,15 +1,21 @@
 package org.launchcode.codingevents.models;
 
+
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
 public class Event {
 
+    @Id
+    @GeneratedValue
     private int id;
-    private static int nextId = 1;
 
     @NotBlank(message= "Cannot be blank!")
     @Size(min=3, max=50, message = "Must be between 3 and 50 characters")
@@ -40,7 +46,6 @@ public class Event {
 
     public Event(String name, String description, String contactEmail, String eventLocation,
                  Boolean registrationRequired, int numberOfGuests, Date date, EventType type) {
-        this();
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
@@ -51,10 +56,7 @@ public class Event {
         this.registrationRequired = true;
     }
 
-    public Event() {
-        this.id = nextId;
-        nextId++;
-    }
+    public Event() {   }
 
     public int getId() {
         return id;
